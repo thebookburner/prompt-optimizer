@@ -3,17 +3,20 @@
   import { A } from "flowbite-svelte";
   import { Heading } from "flowbite-svelte";
   import { onMount } from "svelte";
+  import DragDrop from "../components/DragDrop.svelte";
+  import { generateResponse } from "../api/googleGenAIClient";
 
   var text = "";
   var time = 0;
 
-  function send_input(text, time) {
-    setTimeout(function () {
+  async function send_input(text, time) {
+    setTimeout(async function () {
+      const response = await generateResponse(text);
       document
         .querySelector("df-messenger")
         .querySelector("df-messenger-chat")
         .shadowRoot.querySelector("df-messenger-user-input")
-        .shadowRoot.querySelector("textarea").value = text;
+        .shadowRoot.querySelector("textarea").value = response;
     }, time);
 
     setTimeout(function () {
@@ -115,6 +118,10 @@
             placeholder-text="Ask me anything about the Google Store..." />
         </df-messenger>
       </div>
+    </div>
+    <div class="m-6">
+      <Heading tag="h5" class="my-2">Upload your dataset</Heading>
+      <DragDrop />
     </div>
   </div>
 </div>
